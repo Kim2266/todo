@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #72EDF2 10%, #5151E5 100%);
+    color: #333;
+}
+
+.container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+input[type="text"] {
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #5151E5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4141d5;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background: #f4f4f4;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+li.completed {
+    text-decoration: line-through;
+    color: #999;
+}
+
+button.delete {
+    background: #e74c3c;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button.delete:hover {
+    background: #c0392b;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Enter a new task">
+        <button id="addTaskBtn">Add Task</button>
+        <ul id="taskList">
+           
+        </ul>
+    </div>
+    <script>
+        
+let tasks = [];
+
+
+document.getElementById('addTaskBtn').addEventListener('click', addTask);
+
+
+function addTask() {
+    const taskInput = document.getElementById('taskInput');
+    const task = taskInput.value.trim();
+    if (task) {
+        tasks.push(task);  
+        taskInput.value = '';  
+        renderTasks(); 
+    }
+}
+
+
+function renderTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';  
+    tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.textContent = task;
+        li.addEventListener('click', () => toggleCompleteTask(index));
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.classList.add('delete');
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deleteTask(index);
+        });
+
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
+    });
+}
+
+function toggleCompleteTask(index) {
+    const li = document.querySelectorAll('#taskList li')[index];
+    if (li.classList.contains('completed')) {
+        li.classList.remove('completed');
+    } else {
+        li.classList.add('completed');
+    }
+}
+
+
+function deleteTask(index) {
+    tasks.splice(index, 1);  
+    renderTasks();  
+}
+
+    </script>
+</body>
+</html>
